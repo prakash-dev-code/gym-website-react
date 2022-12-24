@@ -1,0 +1,82 @@
+.join{
+    display: flex;
+    padding: 0 2rem;
+    gap: 10rem;
+}
+
+.join-left{
+    color: #fff;
+    font-size: 3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: relative;
+}
+.join-left>hr{
+    position: absolute;
+    width: 10rem;
+    border: 2px solid var(--orange);
+    border-radius: 20%;
+    margin: -5px 0;
+}
+.join-left>div{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+.join-right{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+.email{
+    display: flex;
+    gap: 1rem;
+    background-color: grey;
+    padding: 0;
+    border-radius: 5px;
+}
+.email>input{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    padding: 15px;
+    border-radius: 5px;
+    color: #fff;
+}
+input:focus{
+    background-color:var(--orange);
+   
+}
+::placeholder{
+    color: var(--lightgray);
+}
+.btnn{
+    background-color: var(--orange);
+    color: #fff;
+    transition: 0.4s ease;
+    
+    padding: 0.5rem;
+    font-weight: bold;
+    border: 4px solid transparent;
+
+}
+
+.btnn:hover{
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+@media(max-width:768px){
+    .join{
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .join-left{
+        font-size: xx-large;
+        flex-direction: column;
+    }
+    .join-right{
+        padding: 2rem;
+    }
+}

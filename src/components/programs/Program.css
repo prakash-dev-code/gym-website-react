@@ -1,0 +1,74 @@
+.Programs{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 0 2rem;
+}
+.programs-header{
+    display: flex;
+    gap: 5rem;
+    font-weight: bold;
+    font-size: 3rem;
+    justify-content: center;
+    color: #fff;
+    text-transform: uppercase;
+    font-style: italic;
+}
+
+.program-categories{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.program-content{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    gap: .5rem;
+    align-items:flex-start;
+    background-color: var(--caloryCard);
+    padding: 1.5rem;
+    border-radius: 5px;
+    width: fit-content;
+    transition: 0.4s ease;
+
+}
+
+.program-content .program-icon{
+   color: #fff;
+   font-size: 1.7rem; 
+   
+}
+.program-content .program-heading{
+    color: #fff;
+    font-weight: 600;
+}
+.program-content .program-text{
+    color: #fff;
+}
+.program-content .program-join-now{
+    color: #fff;
+}
+
+.program-content:hover{
+    background-color: var(--orange);
+    cursor: pointer;
+}
+
+@media(max-width:768px){
+    .programs-header{
+        flex-direction: column;
+        gap: 1rem;
+        font-size: x-large;
+        align-items: center;
+        justify-content: center;
+        margin-top: 2rem;
+
+    }
+    .program-categories{
+        flex-direction: column;
+        align-self: center;
+    }
+}

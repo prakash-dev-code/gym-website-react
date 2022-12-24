@@ -1,0 +1,114 @@
+.testimonials{
+    display: flex;
+    gap: 1rem;
+    padding: 0 2rem;
+}
+.testimonials .testimonials-left-side{
+    display: flex;
+    flex: 1 1;
+    flex-direction: column;
+    gap: 2rem;
+    text-transform: uppercase;
+    color: #fff;
+}
+.testimonials .testimonials-left-side>:nth-child(1){
+    color: var(--orange);
+    font-weight: bold;
+
+}
+.testimonials .testimonials-left-side>:nth-child(2){
+    font-weight: bold;
+    font-size: 3rem;
+
+}
+.testimonials .testimonials-left-side>:nth-child(3){
+    font-weight: bold;
+    font-size: 3rem;
+
+}
+.testimonials .testimonials-left-side>:nth-child(4){
+    text-transform: none;
+    text-align: justify;
+    letter-spacing: 2px;
+    line-height: 40px;
+
+}
+
+.testimonials .testimonials-right-side{
+    flex: 1;
+    position: relative;
+}
+.testimonials .testimonials-right-side>:nth-child(1){
+    position:absolute;
+    width: 19rem;
+    height: 21rem;
+    border: 2px solid orange;
+    background-color: transparent;
+    right: 12rem;
+    top: 1rem;
+}
+.testimonials .testimonials-right-side>:nth-child(2){
+    position:absolute;
+    width: 19rem;
+    height: 21rem;
+    right: 10rem;
+    top: 3rem;
+    background: var(--orange);
+   
+    
+
+}
+
+.testimonials .testimonials-right-side>img{
+    position: absolute;
+    width: 19rem;
+    height: 21rem;
+    object-fit: cover;
+    right: 11rem;
+    top: 2rem;
+}
+.testimonials .testimonials-right-side .arrow{
+    display: flex;
+    gap: 3rem;
+    position: absolute;
+    bottom: 2rem;
+    left: 7rem;
+}
+.testimonials .testimonials-right-side .arrow>img{
+    width: 23px;
+    cursor: pointer;
+}
+
+@media(max-width:768px){
+    .testimonials{
+        flex-direction: column;
+    }
+
+    .testimonials .testimonials-left-side>:nth-child(2),
+    .testimonials .testimonials-left-side>:nth-child(3){
+        font-size: xx-large;
+    }
+     .testimonials .testimonials-right-side{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+    }
+    .testimonials .testimonials-right-side>div{
+        position: relative;
+        display: none;
+    }
+
+     .testimonials .testimonials-right-side>img{
+        top: 2rem;
+        right: 1rem;
+        width: 20rem;
+        height: 21rem;
+        position: relative;
+        align-self: center;
+    }
+    .testimonials .testimonials-right-side .arrow{
+        display: none;
+    }
+}

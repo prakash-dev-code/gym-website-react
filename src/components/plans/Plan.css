@@ -1,0 +1,88 @@
+.plans{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 4rem;
+    padding: 4rem 0 0 0;
+    width: 70%;
+    margin: auto;
+}
+  .blur-p-a{
+    width: 23rem;
+    height: 32rem;
+    left: 0rem;
+    margin-top: 5rem;
+}
+.blur-p-b{
+    width: 32rem;
+    height: 23rem;
+    right: 0;
+    margin-top: 5rem;
+
+}
+   
+
+.plan-box{
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding:  2rem;
+    background-color: var(--caloryCard);
+    border-radius: 5px;
+    color: #fff;
+}
+.plan-box:nth-child(2){
+    background-image: linear-gradient(to bottom,#ffbd01,#ffd40087);
+    transform: scale(1.1);
+}
+
+
+.box-header{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-weight: bold;
+    font-size: 28px;
+    font-family: serif;
+}
+.plans .box-content{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    font-weight: 500;
+    font-size: 18px;
+}
+.plans .box-content .icon{
+    color: #efff00;
+}
+
+.plans .card-bottom{
+    display: block;
+    padding: 8px;
+    background-color: #fff;
+    color: orange;
+    text-align: center;
+    align-items: center;
+
+}
+
+.plans .card-bottom .card-bottom-text{
+   
+    font-size: 20px;
+    word-spacing: 2px;
+    font-weight: 500;
+}
+
+.plans .card-bottom:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+.plans .arrow:hover{
+    cursor: pointer;
+}
+
+@media(max-width:768px){
+    .plans{
+        flex-direction: column;
+    }
+}
