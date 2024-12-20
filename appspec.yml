@@ -3,7 +3,7 @@ os: linux
 
 files:
   - source: /
-    destination: /var/www/react-app
+    destination: /var/www/gym-website-react
 
 hooks:
   BeforeInstall:
