@@ -1,0 +1,41 @@
+version: 0.2
+
+env:
+  shell: bash
+  variables:
+    NODE_ENV: "production"
+    REACT_APP_API_URL: "https://api.example.com"
+
+phases:
+  install:
+    on-failure: "ABORT"
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing dependencies..."
+      - npm install
+
+  build:
+    on-failure: "ABORT"
+    commands:
+      - echo "Building React application..."
+      - npm run build
+      - echo "Files generated in build directory:"
+      - ls -lR build
+
+  post_build:
+    on-failure: "ABORT"
+    commands:
+      - echo "Validating build artifacts..."
+      - ls -R build || { echo "Build directory missing"; exit 1; }
+      - echo "Build completed successfully."
+
+artifacts:
+  files:
+    - "**/*"
+  base-directory: build
+  discard-paths: no
+
+cache:
+  paths:
+    - node_modules/**/*
