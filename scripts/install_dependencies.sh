@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Installing dependencies and building the application..."
-cd /var/www/react-gym-website
-cp -R ./ /var/www/react-gym-website
+cd /var/www/gym-website-react
+cp -R ./ /var/www/gym-website-react
 npm install
 npm run build
 
