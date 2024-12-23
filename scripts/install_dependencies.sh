@@ -25,17 +25,10 @@ fi
 echo "Navigating to $TARGET_DIR..."
 cd $TARGET_DIR
 
-echo "Installing dependencies..."
-if [ -f "package.json" ]; then
-    npm install
-else
-    echo "Error: package.json not found in $TARGET_DIR"
-    exit 1
-fi
+echo "Installing dependencies with memory limit..."
+NODE_OPTIONS="--max-old-space-size=512" npm ci --production || { echo "npm install failed"; exit 1; }
 
 echo "Building the application..."
-npm run build
+npm run build -- --mode production || { echo "npm build failed"; exit 1; }
 
 echo "Script completed successfully at $(date)"
-
-
