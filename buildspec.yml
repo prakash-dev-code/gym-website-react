@@ -13,13 +13,13 @@ phases:
       nodejs: 18
     commands:
       - echo "Installing dependencies..."
-      - npm install
+      - npm ci --prefer-offline # Faster, uses lock file to ensure exact versions
 
   build:
     on-failure: "ABORT"
     commands:
       - echo "Building React application..."
-      - npm run build
+      - npm run build -- --mode production # Ensures optimized production build
       - echo "Files generated in build directory:"
       - ls -lR build
 
