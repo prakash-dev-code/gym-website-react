@@ -25,8 +25,11 @@ fi
 echo "Navigating to $TARGET_DIR..."
 cd $TARGET_DIR
 
-echo "Installing dependencies with memory limit..."
-NODE_OPTIONS="--max-old-space-size=512" npm ci --production || { echo "npm install failed"; exit 1; }
+echo "Cleaning up previous dependencies..."
+rm -rf node_modules package-lock.json
+
+echo "Installing dependencies..."
+npm install --verbose || { echo "npm install failed"; exit 1; }
 
 echo "Building the application..."
 npm run build -- --mode production || { echo "npm build failed"; exit 1; }
