@@ -1,40 +1,59 @@
-name: CI/CD Pipeline
-description: This workflow will build and deploy the project to EC2
+name: Deploy React App (Dev Branch)
 
 on:
   push:
     branches:
       - dev
-  pull_request:
-    branches:
-      - dev
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
+      # Step 1: Checkout Code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Node.js
+      # Step 2: Install Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "18"
 
-      - name: Build project
-        run: npm install && npm run build
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Deploy to EC2
+      # Step 3: Build the React App
+      - name: Install dependencies and build
         run: |
-          echo "${{ secrets.EC2_KEY_PEM }}" > ~/.ssh/ec2-key.pem
-          chmod 600 ~/.ssh/ec2-key.pem
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/ec2-key.pem -r ./build/* ec2-user@${{ secrets.EC2_PUBLIC_IP }}:/var/www/html
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/ec2-key.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} 'sudo systemctl restart nginx'
+          npm install
+          npm run build
+
+      # Step 4: Store SSH Key
+      - name: Store SSH key
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_KEY_PEM }}
+        run: |
+          echo "$PRIVATE_KEY" > ec2_key.pem && chmod 600 ec2_key.pem
+
+      # Step 5: Deploy React App to EC2
+      - name: Deploy React App to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2_key.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} "sudo mkdir -p /var/www/html/react-app-dev && sudo rm -rf /var/www/html/react-app-dev/*"
+          scp -o StrictHostKeyChecking=no -i ec2_key.pem -r build/* ubuntu@${{ secrets.EC2_PUBLIC_IP }}:/var/www/html/react-app-dev/
+        continue-on-error: false # Fail the job if this step fails
+
+      # Step 6: Restart Nginx or Web Server
+      - name: Restart Nginx
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2_key.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} "sudo systemctl restart nginx"
+        continue-on-error: false # Fail the job if this step fails
+
+      # Step 7: Check Deployment Status
+      - name: Verify Deployment
+        run: |
+          curl -I http://${{ secrets.EC2_PUBLIC_IP }} || exit 1
+        continue-on-error: false # Fail the job if the website is not accessible
+
+      # Step 8: Notify Errors (Optional)
+      - name: Report Failure
+        if: failure()
+        run: |
+          echo "Deployment failed. Check logs for details."
