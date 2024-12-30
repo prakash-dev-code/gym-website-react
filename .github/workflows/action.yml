@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "18"
+          node-version: "20"
 
       # Step 3: Build the React App
       - name: Install dependencies and build
@@ -33,27 +33,21 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > ec2_key.pem && chmod 600 ec2_key.pem
 
-      # Step 5: Deploy React App to EC2
+      # Step 5: Set Correct Permissions & Deploy React App
       - name: Deploy React App to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ec2_key.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} "sudo mkdir -p /var/www/html/react-app-dev && sudo rm -rf /var/www/html/react-app-dev/*"
+          ssh -o StrictHostKeyChecking=no -i ec2_key.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} "
+            sudo mkdir -p /var/www/html/react-app-dev &&
+            sudo chown ubuntu:ubuntu /var/www/html/react-app-dev &&
+            sudo rm -rf /var/www/html/react-app-dev/*"
           scp -o StrictHostKeyChecking=no -i ec2_key.pem -r build/* ubuntu@${{ secrets.EC2_PUBLIC_IP }}:/var/www/html/react-app-dev/
-        continue-on-error: false # Fail the job if this step fails
 
       # Step 6: Restart Nginx or Web Server
       - name: Restart Nginx
         run: |
           ssh -o StrictHostKeyChecking=no -i ec2_key.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} "sudo systemctl restart nginx"
-        continue-on-error: false # Fail the job if this step fails
 
       # Step 7: Check Deployment Status
       - name: Verify Deployment
         run: |
           curl -I http://${{ secrets.EC2_PUBLIC_IP }} || exit 1
-        continue-on-error: false # Fail the job if the website is not accessible
-
-      # Step 8: Notify Errors (Optional)
-      - name: Report Failure
-        if: failure()
-        run: |
-          echo "Deployment failed. Check logs for details."
