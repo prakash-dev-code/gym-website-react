@@ -1,41 +1,22 @@
 version: 0.2
 
-env:
-  shell: bash
-  variables:
-    NODE_ENV: "production"
-    REACT_APP_API_URL: "https://api.example.com"
-
 phases:
-  install:
-    on-failure: "ABORT"
-    runtime-versions:
-      nodejs: 18
+  pre_build:
     commands:
-      - echo "Installing dependencies..."
-      - npm ci --prefer-offline # Faster, uses lock file to ensure exact versions
+      - aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin $ECR_REPO
 
   build:
-    on-failure: "ABORT"
     commands:
-      - echo "Building React application..."
-      - npm run build -- --mode production # Ensures optimized production build
-      - echo "Files generated in build directory:"
-      - ls -lR build
+      - docker build -t fitness-app .
+
+      - docker tag fitness-app:latest $ECR_REPO/fitness-app:latest
 
   post_build:
-    on-failure: "ABORT"
     commands:
-      - echo "Validating build artifacts..."
-      - ls -R build || { echo "Build directory missing"; exit 1; }
-      - echo "Build completed successfully."
+      - docker push $ECR_REPO/fitness-app:latest
 
-artifacts:
-  files:
-    - "**/*"
-  base-directory: build
-  discard-paths: no
-
-cache:
-  paths:
-    - node_modules/**/*
+      - aws ssm send-command \
+        --instance-ids $INSTANCE_ID \
+        --document-name "AWS-RunShellScript" \
+        --parameters commands="cd /home/ubuntu/deploy && ./deploy.sh" \
+        --region ap-southeast-2
