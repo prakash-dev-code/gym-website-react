@@ -1,6 +1,6 @@
 {
   "name": "fitness",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^3.10.0",
