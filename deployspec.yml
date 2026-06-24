@@ -1,0 +1,13 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Deploying to EC2 via SSM...
+      - |
+        aws ssm send-command \
+          --instance-ids "$INSTANCE_ID" \
+          --document-name "AWS-RunShellScript" \
+          --parameters commands=["bash /home/ubuntu/deploy/deploy.sh"] \
+          --region ap-southeast-2
+      - echo Deployment triggered successfully.

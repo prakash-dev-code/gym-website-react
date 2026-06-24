@@ -3,21 +3,17 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - echo Logging into ECR...
       - aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin $ECR_REPO
 
   build:
     commands:
+      - echo Building Docker image...
       - docker build -t fitness-app .
       - docker tag fitness-app:latest $ECR_REPO/fitness-app:latest
 
   post_build:
     commands:
+      - echo Pushing image to ECR...
       - docker push $ECR_REPO/fitness-app:latest
-      - echo Deploying to EC2 via SSM...
-      - |
-        aws ssm send-command \
-          --instance-ids "$INSTANCE_ID" \
-          --document-name "AWS-RunShellScript" \
-          --parameters commands=["bash /home/ubuntu/deploy/deploy.sh"] \
-          --region ap-southeast-2
-      - echo Deployment triggered successfully.
+      - echo Image pushed successfully.
