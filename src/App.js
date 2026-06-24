@@ -5,7 +5,7 @@ import Reason from "./components/reasons/Reason";
 import Plan from "./components/plans/Plan";
 import Testimonials from "./components/testimonials/Testimonials";
 import Join from "./components/join us/Join";
-import Footer from "./components/footer/Footer";
+// import Footer from "./components/footer/Footer";
 function App() {
   return (
     <div className="App">
@@ -15,7 +15,7 @@ function App() {
       <Plan />
       <Testimonials />
       <Join />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
